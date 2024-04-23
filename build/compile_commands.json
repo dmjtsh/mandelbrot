@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/build",
+  "command": "/usr/bin/c++ -I/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/include -g -std=gnu++17 -o CMakeFiles/mandelbrot.dir/main.cpp.o -c /home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/main.cpp",
+  "file": "/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/main.cpp"
+},
+{
+  "directory": "/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/build",
+  "command": "/usr/bin/c++ -I/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/include -g -std=gnu++17 -o CMakeFiles/mandelbrot.dir/src/mandelbrot.cpp.o -c /home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/src/mandelbrot.cpp",
+  "file": "/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/src/mandelbrot.cpp"
+}
+]

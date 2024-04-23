@@ -1,4 +1,6 @@
-﻿#include "mandelbrot.h"
+﻿#include <math.h>
+
+#include "mandelbrot.h"
 
 Mandelbrot::Mandelbrot()
 {
@@ -14,7 +16,7 @@ VertexArray Mandelbrot::GetPixels()
 void Mandelbrot::SetPixels(size_t x, size_t y, Color color)
 {
     size_t position = x + y * WINDOW_SIZE_X;
-    
+
     pixels[position].position.x = x;
     pixels[position].position.y = y;
     pixels[position].color      = color;
@@ -27,8 +29,8 @@ void Mandelbrot::Draw(RenderWindow* window, Vector2f* screen_center)
     for(size_t y = 0; y < WINDOW_SIZE_Y; y++)
     {
         float x0 = ((0        ) * POINT_OFFSET_X - 1.325f + screen_center->x) * scale;
-        float y0 = (((float)y) * POINT_OFFSET_Y           + screen_center->y) * scale;
-        
+        float y0 = (((float)y)  * POINT_OFFSET_Y          + screen_center->y) * scale;
+
         for (size_t x = 0; x < WINDOW_SIZE_X; x++)
         {
             x0 += POINT_OFFSET_X;
@@ -36,7 +38,7 @@ void Mandelbrot::Draw(RenderWindow* window, Vector2f* screen_center)
             float xn = x0;
             float yn = y0;
 
-            size_t n = 0; 
+            size_t n = 0;
             for (;n < MAX_POINT_CALC_COUNT; n++)
             {
                 float xn3 = xn*xn*xn;
@@ -51,7 +53,7 @@ void Mandelbrot::Draw(RenderWindow* window, Vector2f* screen_center)
                 xn = xn2 - yn2 + x0;
                 yn = 2*xnyn    + y0;
             }
-            
+
             float I = sqrtf(sqrtf ((float)n / (float)MAX_POINT_CALC_COUNT)) * 255.f; // TODO:WTF
             int   c = (int)I;
             Color pixel_color (c, c, c%2*64);
@@ -102,7 +104,7 @@ void DisplayMandelbrotWindow(RenderWindow* window)
                 }
             }
         }
-       
+
 
         mandelbrot.Draw(window, &screen_center);
 

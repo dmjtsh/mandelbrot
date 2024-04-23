@@ -1,0 +1,5 @@
+/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/build/CMakeFiles/mandelbrot.dir
+/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/build/CMakeFiles/package.dir
+/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/build/CMakeFiles/package_source.dir
+/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/build/CMakeFiles/edit_cache.dir
+/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/build/CMakeFiles/rebuild_cache.dir
