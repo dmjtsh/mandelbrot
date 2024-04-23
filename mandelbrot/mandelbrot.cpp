@@ -26,8 +26,8 @@ void Mandelbrot::Draw(RenderWindow* window, Vector2f* screen_center)
 
     for(size_t y = 0; y < WINDOW_SIZE_Y; y++)
     {
-        float x0 = ((0        - 400.f) * POINT_OFFSET_X - 1.325f + screen_center->x) * scale;
-        float y0 = (((float)y - 300.f) * POINT_OFFSET_Y + screen_center->y) * scale;
+        float x0 = ((0        ) * POINT_OFFSET_X - 1.325f + screen_center->x) * scale;
+        float y0 = (((float)y) * POINT_OFFSET_Y           + screen_center->y) * scale;
         
         for (size_t x = 0; x < WINDOW_SIZE_X; x++)
         {
@@ -39,8 +39,10 @@ void Mandelbrot::Draw(RenderWindow* window, Vector2f* screen_center)
             size_t n = 0; 
             for (;n < MAX_POINT_CALC_COUNT; n++)
             {
-                float xn2  = xn*xn;
-                float yn2  = yn*yn;
+                float xn3 = xn*xn*xn;
+                float yn3 = yn*yn*yn;
+                float xn2 = xn*xn;
+                float yn2 = yn*yn;
                 float xnyn = xn*yn;
 
                 float r2 = xn2+yn2;
@@ -50,9 +52,9 @@ void Mandelbrot::Draw(RenderWindow* window, Vector2f* screen_center)
                 yn = 2*xnyn    + y0;
             }
             
-            float I = sqrtf(sqrtf(sqrtf ((float)n / (float)MAX_POINT_CALC_COUNT))) * 255.f; // TODO:WTF
+            float I = sqrtf(sqrtf ((float)n / (float)MAX_POINT_CALC_COUNT)) * 255.f; // TODO:WTF
             int   c = (int)I;
-            Color pixel_color (c, c%2*64, 255-c);
+            Color pixel_color (c, c, c%2*64);
 
             this->SetPixels(x, y, pixel_color);
         }
@@ -75,26 +77,32 @@ void DisplayMandelbrotWindow(RenderWindow* window)
             if (event.type == Event::Closed)
                 window->close();
 
-            if (event.type == sf::Event::KeyPressed)
+            if (event.type == Event::KeyPressed)
             {
-                if (event.key.code == sf::Keyboard::Right)
+                switch(event.key.code)
+                {
+                case Keyboard::Right:
                     screen_center.x += POINT_OFFSET_X * 50.f;
+                    break;
 
-                else if (event.key.code == sf::Keyboard::Left)
+                case Keyboard::Left:
                     screen_center.x -= POINT_OFFSET_X * 50.f;
+                    break;
 
-                else if (event.key.code == sf::Keyboard::Down)
+                case Keyboard::Down:
                     screen_center.y += POINT_OFFSET_X * 50.f;
+                    break;
 
-                else if (event.key.code == sf::Keyboard::Up)
+                case Keyboard::Up:
                     screen_center.y -= POINT_OFFSET_Y * 50.f;
+                    break;
 
-                else if (event.key.code == sf::Keyboard::Escape)
+                case Keyboard::Escape:
                     window->close();
+                }
             }
         }
        
-        window->clear(Color::Blue);
 
         mandelbrot.Draw(window, &screen_center);
 
