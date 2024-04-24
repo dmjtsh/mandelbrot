@@ -1,0 +1,4 @@
+# ninja log v5
+3	484	1713940830039833557	CMakeFiles/mandelbrot.dir/main.cpp.o	b2939fc6860fe724
+3	640	1713940830195832758	CMakeFiles/mandelbrot.dir/src/mandelbrot.cpp.o	b395fd187642ae7c
+640	748	1713940830299832226	mandelbrot	e04e8f0d3ea8b49b
