@@ -1,4 +1,4 @@
-# Install script for directory: /home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot
+# Install script for directory: /home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Optimized
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Optimized/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

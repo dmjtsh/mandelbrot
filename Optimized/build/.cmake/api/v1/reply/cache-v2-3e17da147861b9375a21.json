@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/build"
+			"value" : "/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Optimized/build"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -575,7 +575,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot"
+			"value" : "/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Optimized"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1171,7 +1171,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/build"
+			"value" : "/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Optimized/build"
 		},
 		{
 			"name" : "mandelbrot_IS_TOP_LEVEL",
@@ -1195,7 +1195,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot"
+			"value" : "/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Optimized"
 		}
 	],
 	"kind" : "cache",

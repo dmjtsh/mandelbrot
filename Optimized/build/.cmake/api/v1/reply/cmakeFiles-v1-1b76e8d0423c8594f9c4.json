@@ -125,8 +125,8 @@
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/build",
-		"source" : "/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot"
+		"build" : "/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Optimized/build",
+		"source" : "/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Optimized"
 	},
 	"version" : 
 	{
