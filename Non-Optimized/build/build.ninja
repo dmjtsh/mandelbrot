@@ -39,7 +39,7 @@ include CMakeFiles/rules.ninja
 #############################################
 # Logical path to working directory; prefix for absolute paths.
 
-cmake_ninja_workdir = /home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Non-Optimized/build/
+cmake_ninja_workdir = /home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/build/
 # =============================================================================
 # Object build statements for EXECUTABLE target mandelbrot
 
@@ -49,17 +49,17 @@ cmake_ninja_workdir = /home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Non-Opt
 
 build cmake_object_order_depends_target_mandelbrot: phony || CMakeFiles/mandelbrot.dir
 
-build CMakeFiles/mandelbrot.dir/main.cpp.o: CXX_COMPILER__mandelbrot_Debug /home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Non-Optimized/main.cpp || cmake_object_order_depends_target_mandelbrot
+build CMakeFiles/mandelbrot.dir/main.cpp.o: CXX_COMPILER__mandelbrot_Debug /home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/main.cpp || cmake_object_order_depends_target_mandelbrot
   DEP_FILE = CMakeFiles/mandelbrot.dir/main.cpp.o.d
   FLAGS = -g -std=gnu++17
-  INCLUDES = -I/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Non-Optimized/include
+  INCLUDES = -I/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/include
   OBJECT_DIR = CMakeFiles/mandelbrot.dir
   OBJECT_FILE_DIR = CMakeFiles/mandelbrot.dir
 
-build CMakeFiles/mandelbrot.dir/src/mandelbrot.cpp.o: CXX_COMPILER__mandelbrot_Debug /home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Non-Optimized/src/mandelbrot.cpp || cmake_object_order_depends_target_mandelbrot
+build CMakeFiles/mandelbrot.dir/src/mandelbrot.cpp.o: CXX_COMPILER__mandelbrot_Debug /home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/src/mandelbrot.cpp || cmake_object_order_depends_target_mandelbrot
   DEP_FILE = CMakeFiles/mandelbrot.dir/src/mandelbrot.cpp.o.d
   FLAGS = -g -std=gnu++17
-  INCLUDES = -I/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Non-Optimized/include
+  INCLUDES = -I/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/include
   OBJECT_DIR = CMakeFiles/mandelbrot.dir
   OBJECT_FILE_DIR = CMakeFiles/mandelbrot.dir/src
 
@@ -85,7 +85,7 @@ build mandelbrot: CXX_EXECUTABLE_LINKER__mandelbrot_Debug CMakeFiles/mandelbrot.
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Non-Optimized/build && /usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  COMMAND = cd /home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/build && /usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -96,7 +96,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Non-Optimized/build && /usr/bin/cmake --regenerate-during-build -S/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Non-Optimized -B/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Non-Optimized/build
+  COMMAND = cd /home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/build && /usr/bin/cmake --regenerate-during-build -S/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot -B/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/build
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -112,7 +112,7 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 # =============================================================================
 
 #############################################
-# Folder: /home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Non-Optimized/build
+# Folder: /home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/build
 
 build all: phony mandelbrot
 
