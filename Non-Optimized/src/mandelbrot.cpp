@@ -1,7 +1,17 @@
 ﻿#include <math.h>
 #include <assert.h>
+#include <immintrin.h>
+#include <string>
 
 #include "mandelbrot.h"
+
+uint64_t rdtsc() {
+    unsigned int lo = 0;
+    unsigned int hi = 0;
+
+    __asm__ __volatile__ ("rdtsc" : "=a" (lo), "=d" (hi));
+    return ((uint64_t)hi << 32) | lo;
+}
 
 Mandelbrot::Mandelbrot()
 {
@@ -35,41 +45,41 @@ VertexArray Mandelbrot::GetPixels()
     return pixels;
 }
 
-void Mandelbrot::MoveUp(const Keyboard::Key key)
+inline void Mandelbrot::MoveUp(const Keyboard::Key key)
 {
     config.center.y -= config.point_offset.y * config.move_step_size;
 }
-void Mandelbrot::MoveDown(const Keyboard::Key key)
+inline void Mandelbrot::MoveDown(const Keyboard::Key key)
 {
     config.center.y += config.point_offset.y * config.move_step_size;
 }
-void Mandelbrot::MoveRight(const Keyboard::Key key)
+inline void Mandelbrot::MoveRight(const Keyboard::Key key)
 {
     config.center.x += config.point_offset.x * config.move_step_size;
 }
-void Mandelbrot::MoveLeft(const Keyboard::Key key)
+inline void Mandelbrot::MoveLeft(const Keyboard::Key key)
 {
     config.center.x -= config.point_offset.x * config.move_step_size;
 }
 
-void Mandelbrot::ScaleUp(const Keyboard::Key key)
+inline void Mandelbrot::ScaleUp(const Keyboard::Key key)
 {
     config.scale -= SCALE_UP_COEFF;
 }
-void Mandelbrot::ScaleDown(const Keyboard::Key key)
+inline void Mandelbrot::ScaleDown(const Keyboard::Key key)
 {
     config.scale += SCALE_DOWN_COEFF;
 }
 
-void Mandelbrot::Draw(RenderWindow* window)
+void Mandelbrot::CountSet()
 {
     for(size_t y = 0; y < WINDOW_SIZE_Y; y++)
     {
         config.point_offset.x = INIT_POINT_OFFSET_X * config.scale;
         config.point_offset.y = INIT_POINT_OFFSET_Y * config.scale;
 
-        float x0 =               (config.point_offset.x + config.center.x);
-        float y0 = (((float)y)  * config.point_offset.y + config.center.y);
+        float x0 = ((         - (float)WINDOW_SIZE_X) * config.point_offset.x) + config.center.x;
+        float y0 = (((float)y - (float)WINDOW_SIZE_Y) * config.point_offset.y) + config.center.y;
 
         for (size_t x = 0; x < WINDOW_SIZE_X; x++)
         {
@@ -107,12 +117,13 @@ void Mandelbrot::Draw(RenderWindow* window)
             this->SetPixels(x, y, pixel_color);
         }
     }
-
-    window->draw(this->GetPixels());
 }
 
 void Mandelbrot::Display(RenderWindow* window)
 {
+    uint64_t timer_start = 0;
+    uint64_t timer_end   = 0;
+
     while (window->isOpen())
     {
         Event event;
@@ -152,7 +163,13 @@ void Mandelbrot::Display(RenderWindow* window)
             }
         }
 
-        this->Draw(window);
+        timer_start = rdtsc();
+        this->CountSet();
+        timer_end = rdtsc();
+
+        printf("Time Spent (ms): %d\n", (timer_end-timer_start)/30000000);
+
+        window->draw(this->GetPixels());
 
         window->display();
     }

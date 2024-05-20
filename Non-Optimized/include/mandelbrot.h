@@ -44,7 +44,7 @@ public:
 
     void Display(RenderWindow* window);
 private:
-    void Draw(RenderWindow* window);
+    void CountSet();
 
     void ScaleUp  (const Keyboard::Key key);
     void ScaleDown(const Keyboard::Key key);

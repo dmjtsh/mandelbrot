@@ -6,6 +6,7 @@ project(mandelbrot VERSION 1.0)
 
 file(GLOB_RECURSE SRC_FILES src/*.cpp)
 add_executable(mandelbrot main.cpp ${SRC_FILES})
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 
 target_link_libraries(mandelbrot PRIVATE -lsfml-graphics)
 target_link_libraries(mandelbrot PRIVATE -lsfml-window)

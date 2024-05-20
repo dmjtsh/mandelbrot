@@ -37,8 +37,6 @@ struct Config
     size_t max_point_calc_count;
 
     float scale;
-
-    Text fps_text;
 };
 
 class Mandelbrot
@@ -60,8 +58,6 @@ private:
 
     VertexArray GetPixels();
     void        SetPixels(size_t x, size_t y, Color color);
-
-    void SetFPS(uint64_t cycles);
 
     VertexArray pixels;
 

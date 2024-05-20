@@ -1,6 +1,7 @@
 ﻿#include <math.h>
 #include <assert.h>
 #include <immintrin.h>
+#include <string>
 
 #include "mandelbrot.h"
 
@@ -12,31 +13,12 @@ uint64_t rdtsc() {
     return ((uint64_t)hi << 32) | lo;
 }
 
-void Mandelbrot::SetFPS(uint64_t cycles) {
-    double time_seconds = cycles / (CPU_FREQUENCY_GHZ * 1e9);
-
-    double fps = 1.0 / time_seconds;
-
-    config.fps_text.setString("FPS: " + std::to_string(fps));
-}
-
 Mandelbrot::Mandelbrot()
 {
     config.center.x       = INIT_CENTER_POS_X;
     config.center.y       = INIT_CENTER_POS_Y;
     config.point_offset.x = INIT_POINT_OFFSET_X;
     config.point_offset.y = INIT_POINT_OFFSET_Y;
-
-    Font font;
-    if (!font.loadFromFile("fonts/fps_font.ttf")) {
-        fprintf(stderr, "Error Loading Font...\n");
-        return;
-    }
-
-    config.fps_text.setFont(font);
-    config.fps_text.setCharacterSize(78);
-    config.fps_text.setFillColor(sf::Color::White);
-    config.fps_text.setPosition(10, 10);
 
     config.move_step_size = INIT_MOVE_STEP_SIZE;
 
@@ -102,14 +84,15 @@ void Mandelbrot::CountSet()
         config.point_offset.x = INIT_POINT_OFFSET_X * config.scale;
         config.point_offset.y = INIT_POINT_OFFSET_Y * config.scale;
 
-        float x0 =               (config.point_offset.x + config.center.x);
-        float y0 = (((float)y) * (config.point_offset.y + config.center.y));
+        float x0 = ((         - (float)WINDOW_SIZE_X) * config.point_offset.x) + config.center.x;
+        float y0 = (((float)y - (float)WINDOW_SIZE_Y) * config.point_offset.y) + config.center.y;
 
-        __m256 _px_offsets  = _mm256_set1_ps(config.point_offset.x);
-        __m256 _points = _mm256_mul_ps(_iter, _px_offsets);
-
-        for (size_t x = 0; x < WINDOW_SIZE_X; x+=8,  x0 += config.point_offset.x*8)
+        for (size_t x = 0; x < WINDOW_SIZE_X; x+=8)
         {
+            x0 += config.point_offset.x*8;
+
+            __m256 _points = _mm256_mul_ps(_iter, _mm256_set1_ps(config.point_offset.x));
+
             __m256 _x0 = _mm256_add_ps(_mm256_set1_ps(x0), _points);
             __m256 _y0 = _mm256_set1_ps(y0);
 
@@ -118,24 +101,23 @@ void Mandelbrot::CountSet()
 
             __m256i _num = _mm256_setzero_si256();
 
-            size_t n = 0;
-            for (;n < config.max_point_calc_count; n++)
+            for (size_t n = 0;n < config.max_point_calc_count; n++)
             {
                 __m256 _xn2  = _mm256_mul_ps(_xn, _xn);
                 __m256 _yn2  = _mm256_mul_ps(_yn, _yn);
-                __m256 _xnyn = _mm256_mul_ps(_xn, _yn);
 
                 __m256 _r2  = _mm256_add_ps(_xn2, _yn2);
-                __m256 _cmp = _mm256_cmp_ps(_r2, _radius, _CMP_LE_OS);
+
+                __m256 _cmp = _mm256_cmp_ps(_r2, _radius, _CMP_LE_OQ);
 
                 int mask = _mm256_movemask_ps(_cmp);
                 if (!mask) break;
 
                 _num = _mm256_sub_epi32(_num, _mm256_castps_si256(_cmp));
 
-                _xn = _mm256_sub_ps(_xn2, _yn2);
-                _xn = _mm256_add_ps(_xn, _x0);
+                __m256 _xnyn = _mm256_mul_ps(_xn, _yn);
 
+                _xn = _mm256_add_ps(_mm256_sub_ps(_xn2, _yn2), _x0);
                 _yn = _mm256_add_ps(_mm256_add_ps(_xnyn, _xnyn), _y0);
             }
 
@@ -147,7 +129,7 @@ void Mandelbrot::CountSet()
                 float* shade = (float*)&_shade;
                 Color pixel_color(shade[i], shade[i], (int)shade[i]%2*64);
 
-                this->SetPixels(x, y, pixel_color);
+                this->SetPixels(x+i, y, pixel_color);
             }
         }
     }
@@ -198,15 +180,13 @@ void Mandelbrot::Display(RenderWindow* window)
         }
 
         timer_start = rdtsc();
-
         this->CountSet();
-
         timer_end = rdtsc();
 
-        SetFPS(timer_end - timer_start);
+        printf("Time Spent (ms): %d\n", (timer_end-timer_start)/30000000);
 
         window->draw(this->GetPixels());
-        window->draw(config.fps_text);
+
         window->display();
     }
 }
