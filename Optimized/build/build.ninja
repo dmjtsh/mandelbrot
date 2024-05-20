@@ -51,14 +51,14 @@ build cmake_object_order_depends_target_mandelbrot: phony || CMakeFiles/mandelbr
 
 build CMakeFiles/mandelbrot.dir/main.cpp.o: CXX_COMPILER__mandelbrot_Debug /home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Optimized/main.cpp || cmake_object_order_depends_target_mandelbrot
   DEP_FILE = CMakeFiles/mandelbrot.dir/main.cpp.o.d
-  FLAGS = -g -std=gnu++17
+  FLAGS = -O3 -c -mavx -mavx2 -g -std=gnu++17
   INCLUDES = -I/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Optimized/include
   OBJECT_DIR = CMakeFiles/mandelbrot.dir
   OBJECT_FILE_DIR = CMakeFiles/mandelbrot.dir
 
 build CMakeFiles/mandelbrot.dir/src/mandelbrot.cpp.o: CXX_COMPILER__mandelbrot_Debug /home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Optimized/src/mandelbrot.cpp || cmake_object_order_depends_target_mandelbrot
   DEP_FILE = CMakeFiles/mandelbrot.dir/src/mandelbrot.cpp.o.d
-  FLAGS = -g -std=gnu++17
+  FLAGS = -O3 -c -mavx -mavx2 -g -std=gnu++17
   INCLUDES = -I/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Optimized/include
   OBJECT_DIR = CMakeFiles/mandelbrot.dir
   OBJECT_FILE_DIR = CMakeFiles/mandelbrot.dir/src
@@ -72,7 +72,7 @@ build CMakeFiles/mandelbrot.dir/src/mandelbrot.cpp.o: CXX_COMPILER__mandelbrot_D
 # Link the executable mandelbrot
 
 build mandelbrot: CXX_EXECUTABLE_LINKER__mandelbrot_Debug CMakeFiles/mandelbrot.dir/main.cpp.o CMakeFiles/mandelbrot.dir/src/mandelbrot.cpp.o
-  FLAGS = -g
+  FLAGS = -O3 -c -mavx -mavx2 -g
   LINK_LIBRARIES = -lsfml-graphics  -lsfml-window  -lsfml-system
   OBJECT_DIR = CMakeFiles/mandelbrot.dir
   POST_BUILD = :

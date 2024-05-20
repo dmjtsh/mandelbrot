@@ -5,17 +5,17 @@
 
 Mandelbrot::Mandelbrot()
 {
-    config.center.x = -1.0f;
-    config.center.y = -1.4f;
-    config.point_offset.x = 1/800.f;
-    config.point_offset.y = 1/800.f;
+    config.center.x       = INIT_CENTER_POS_X;
+    config.center.y       = INIT_CENTER_POS_Y;
+    config.point_offset.x = INIT_POINT_OFFSET_X;
+    config.point_offset.y = INIT_POINT_OFFSET_Y;
 
-    config.move_step_size = 50.f;
+    config.move_step_size = INIT_MOVE_STEP_SIZE;
 
-    config.scale = 1.0f;
+    config.scale = INIT_SCALE;
 
-    config.max_point_calc_count = 256;
-    config.radius = 100.f;
+    config.max_point_calc_count = INIT_MAX_POINT_CALC_COUNT;
+    config.radius = INIT_RADIUS;
 
     pixels.setPrimitiveType(Points);
     pixels.resize(WINDOW_SIZE_X*WINDOW_SIZE_Y);
@@ -54,19 +54,22 @@ void Mandelbrot::MoveLeft(const Keyboard::Key key)
 
 void Mandelbrot::ScaleUp(const Keyboard::Key key)
 {
-    config.scale *= 0.5;
+    config.scale -= SCALE_UP_COEFF;
 }
 void Mandelbrot::ScaleDown(const Keyboard::Key key)
 {
-    config.scale *= 2;
+    config.scale += SCALE_DOWN_COEFF;
 }
 
 void Mandelbrot::Draw(RenderWindow* window)
 {
     for(size_t y = 0; y < WINDOW_SIZE_Y; y++)
     {
-        float x0 =               (config.point_offset.x + config.center.x) - (config.scale*(4/3));
-        float y0 = (((float)y)  * config.point_offset.y + config.center.y) + (config.scale*(3/3));
+        config.point_offset.x = INIT_POINT_OFFSET_X * config.scale;
+        config.point_offset.y = INIT_POINT_OFFSET_Y * config.scale;
+
+        float x0 =               (config.point_offset.x + config.center.x);
+        float y0 = (((float)y)  * config.point_offset.y + config.center.y);
 
         for (size_t x = 0; x < WINDOW_SIZE_X; x++)
         {

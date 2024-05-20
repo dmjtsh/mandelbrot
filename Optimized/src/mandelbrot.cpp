@@ -1,7 +1,24 @@
 ﻿#include <math.h>
 #include <assert.h>
+#include <immintrin.h>
 
 #include "mandelbrot.h"
+
+uint64_t rdtsc() {
+    unsigned int lo = 0;
+    unsigned int hi = 0;
+
+    __asm__ __volatile__ ("rdtsc" : "=a" (lo), "=d" (hi));
+    return ((uint64_t)hi << 32) | lo;
+}
+
+void Mandelbrot::SetFPS(uint64_t cycles) {
+    double time_seconds = cycles / (CPU_FREQUENCY_GHZ * 1e9);
+
+    double fps = 1.0 / time_seconds;
+
+    config.fps_text.setString("FPS: " + std::to_string(fps));
+}
 
 Mandelbrot::Mandelbrot()
 {
@@ -9,6 +26,17 @@ Mandelbrot::Mandelbrot()
     config.center.y       = INIT_CENTER_POS_Y;
     config.point_offset.x = INIT_POINT_OFFSET_X;
     config.point_offset.y = INIT_POINT_OFFSET_Y;
+
+    Font font;
+    if (!font.loadFromFile("fonts/fps_font.ttf")) {
+        fprintf(stderr, "Error Loading Font...\n");
+        return;
+    }
+
+    config.fps_text.setFont(font);
+    config.fps_text.setCharacterSize(78);
+    config.fps_text.setFillColor(sf::Color::White);
+    config.fps_text.setPosition(10, 10);
 
     config.move_step_size = INIT_MOVE_STEP_SIZE;
 
@@ -35,84 +63,101 @@ VertexArray Mandelbrot::GetPixels()
     return pixels;
 }
 
-void Mandelbrot::MoveUp(const Keyboard::Key key)
+inline void Mandelbrot::MoveUp(const Keyboard::Key key)
 {
     config.center.y -= config.point_offset.y * config.move_step_size;
 }
-void Mandelbrot::MoveDown(const Keyboard::Key key)
+inline void Mandelbrot::MoveDown(const Keyboard::Key key)
 {
     config.center.y += config.point_offset.y * config.move_step_size;
 }
-void Mandelbrot::MoveRight(const Keyboard::Key key)
+inline void Mandelbrot::MoveRight(const Keyboard::Key key)
 {
     config.center.x += config.point_offset.x * config.move_step_size;
 }
-void Mandelbrot::MoveLeft(const Keyboard::Key key)
+inline void Mandelbrot::MoveLeft(const Keyboard::Key key)
 {
     config.center.x -= config.point_offset.x * config.move_step_size;
 }
 
-void Mandelbrot::ScaleUp(const Keyboard::Key key)
+inline void Mandelbrot::ScaleUp(const Keyboard::Key key)
 {
     config.scale -= SCALE_UP_COEFF;
 }
-void Mandelbrot::ScaleDown(const Keyboard::Key key)
+inline void Mandelbrot::ScaleDown(const Keyboard::Key key)
 {
     config.scale += SCALE_DOWN_COEFF;
 }
 
-void Mandelbrot::Draw(RenderWindow* window)
+void Mandelbrot::CountSet()
 {
+    const __m256 _radius       = _mm256_set1_ps(config.radius);
+    const __m256 _max_p_count = _mm256_set1_ps(config.max_point_calc_count);
+
+    const __m256 _iter = _mm256_set_ps(7, 6, 5, 4, 3, 2, 1, 0);
+    const __m256 _255  = _mm256_set1_ps(255);
+
     for(size_t y = 0; y < WINDOW_SIZE_Y; y++)
     {
         config.point_offset.x = INIT_POINT_OFFSET_X * config.scale;
         config.point_offset.y = INIT_POINT_OFFSET_Y * config.scale;
 
         float x0 =               (config.point_offset.x + config.center.x);
-        float y0 = (((float)y)  * config.point_offset.y + config.center.y);
+        float y0 = (((float)y) * (config.point_offset.y + config.center.y));
 
-        for (size_t x = 0; x < WINDOW_SIZE_X; x++)
+        __m256 _px_offsets  = _mm256_set1_ps(config.point_offset.x);
+        __m256 _points = _mm256_mul_ps(_iter, _px_offsets);
+
+        for (size_t x = 0; x < WINDOW_SIZE_X; x+=8,  x0 += config.point_offset.x*8)
         {
-            x0 += config.point_offset.x;
+            __m256 _x0 = _mm256_add_ps(_mm256_set1_ps(x0), _points);
+            __m256 _y0 = _mm256_set1_ps(y0);
 
-            float xn = x0;
-            float yn = y0;
+            __m256 _xn = _x0;
+            __m256 _yn = _y0;
+
+            __m256i _num = _mm256_setzero_si256();
 
             size_t n = 0;
             for (;n < config.max_point_calc_count; n++)
             {
-                float xn3 = xn*xn*xn;
-                float yn3 = yn*yn*yn;
-                float xn2 = xn*xn;
-                float yn2 = yn*yn;
-                float xnyn = xn*yn;
+                __m256 _xn2  = _mm256_mul_ps(_xn, _xn);
+                __m256 _yn2  = _mm256_mul_ps(_yn, _yn);
+                __m256 _xnyn = _mm256_mul_ps(_xn, _yn);
 
-                float r2 = xn2+yn2;
-                if (r2 >= config.radius) break;
+                __m256 _r2  = _mm256_add_ps(_xn2, _yn2);
+                __m256 _cmp = _mm256_cmp_ps(_r2, _radius, _CMP_LE_OS);
 
-                xn = xn2 - yn2 + x0;
-                yn = 2*xnyn    + y0;
+                int mask = _mm256_movemask_ps(_cmp);
+                if (!mask) break;
+
+                _num = _mm256_sub_epi32(_num, _mm256_castps_si256(_cmp));
+
+                _xn = _mm256_sub_ps(_xn2, _yn2);
+                _xn = _mm256_add_ps(_xn, _x0);
+
+                _yn = _mm256_add_ps(_mm256_add_ps(_xnyn, _xnyn), _y0);
             }
 
-            // Lambda Function for Counting Color
-            auto getCountedColor = [&](int n) {
-                int shade = (int)(sqrtf(sqrtf ((float)n / (float)config.max_point_calc_count)) * 255.f);
-                Color color(shade, shade, shade%2*64);
+            __m256 _num_dived = _mm256_div_ps(_mm256_cvtepi32_ps(_num), _max_p_count);
+            __m256 _shade     = _mm256_mul_ps(_mm256_sqrt_ps(_mm256_sqrt_ps(_num_dived)), _255);
 
-                return color;
-            };
+            for(size_t i = 0; i < 8; i++)
+            {
+                float* shade = (float*)&_shade;
+                Color pixel_color(shade[i], shade[i], (int)shade[i]%2*64);
 
-            Color pixel_color = getCountedColor(n);
-
-            this->SetPixels(x, y, pixel_color);
+                this->SetPixels(x, y, pixel_color);
+            }
         }
     }
-
-    window->draw(this->GetPixels());
 }
 
 void Mandelbrot::Display(RenderWindow* window)
 {
+    uint64_t timer_start = 0;
+    uint64_t timer_end   = 0;
+
     while (window->isOpen())
     {
         Event event;
@@ -152,8 +197,16 @@ void Mandelbrot::Display(RenderWindow* window)
             }
         }
 
-        this->Draw(window);
+        timer_start = rdtsc();
 
+        this->CountSet();
+
+        timer_end = rdtsc();
+
+        SetFPS(timer_end - timer_start);
+
+        window->draw(this->GetPixels());
+        window->draw(config.fps_text);
         window->display();
     }
 }

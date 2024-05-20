@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 
+const double CPU_FREQUENCY_GHZ = 3.0;
+
 const size_t WINDOW_SIZE_X = 800;
 const size_t WINDOW_SIZE_Y = 600;
 
@@ -35,6 +37,8 @@ struct Config
     size_t max_point_calc_count;
 
     float scale;
+
+    Text fps_text;
 };
 
 class Mandelbrot
@@ -44,7 +48,7 @@ public:
 
     void Display(RenderWindow* window);
 private:
-    void Draw(RenderWindow* window);
+    void CountSet();
 
     void ScaleUp  (const Keyboard::Key key);
     void ScaleDown(const Keyboard::Key key);
@@ -56,6 +60,8 @@ private:
 
     VertexArray GetPixels();
     void        SetPixels(size_t x, size_t y, Color color);
+
+    void SetFPS(uint64_t cycles);
 
     VertexArray pixels;
 

@@ -1,12 +1,12 @@
 [
 {
   "directory": "/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Optimized/build",
-  "command": "/usr/bin/c++ -I/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Optimized/include -g -std=gnu++17 -o CMakeFiles/mandelbrot.dir/main.cpp.o -c /home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Optimized/main.cpp",
+  "command": "/usr/bin/c++ -I/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Optimized/include  -O3 -c -mavx -mavx2 -g -std=gnu++17 -o CMakeFiles/mandelbrot.dir/main.cpp.o -c /home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Optimized/main.cpp",
   "file": "/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Optimized/main.cpp"
 },
 {
   "directory": "/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Optimized/build",
-  "command": "/usr/bin/c++ -I/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Optimized/include -g -std=gnu++17 -o CMakeFiles/mandelbrot.dir/src/mandelbrot.cpp.o -c /home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Optimized/src/mandelbrot.cpp",
+  "command": "/usr/bin/c++ -I/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Optimized/include  -O3 -c -mavx -mavx2 -g -std=gnu++17 -o CMakeFiles/mandelbrot.dir/src/mandelbrot.cpp.o -c /home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Optimized/src/mandelbrot.cpp",
   "file": "/home/dmit/Desktop/PROGRAMMING/DED_2SEM/mandelbrot/Optimized/src/mandelbrot.cpp"
 }
 ]
